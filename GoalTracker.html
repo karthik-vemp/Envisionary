@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+  <style> 
+    @import url('https://fonts.googleapis.com/css2?family=Bitter:wght@300&display=swap');
+
+    *{
+       box-sizing: border-box; 
+      outline: none;
+    }
+    body{
+      background-color: #ffe499;
+      font-family: 'Bitter', serif;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+      padding-top: 3rem;
+    }
+
+    .add {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background-color: #ffd35c;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    .add:active {
+      transform: scale(0.98);
+    }
+    .goal{
+      background-color: #ffd35c;
+      box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 40px;
+      height:200px;
+      width: 200px;
+      overflow-y: scroll;
+      margin-left: 40px;
+
+    }
+
+    .goal.tools{
+      background-color: #ffd35c;
+      display: flex;
+      justify-content: flex-end;
+      padding: 0.5rem;
+    }
+
+    .goal.tools button {
+      background-color: transparent;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+
+    }
+
+    .goal textarea{
+      outline: none;
+      font-family: inherit;
+      font-size:1.2rem;
+      border: none;
+      height: 200px;
+      width: 75%;
+      padding: 20px;
+      margin-left: 20px;
+
+    }
+
+
+    .scoreDisplay {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .scoreButton {
+      margin-right: 5px;
+    }
+    .main {
+      padding: 20px;
+    }
+
+    .hidden{
+      display: none;
+    }
+  </style>
+
+<body>
+  <p>
+  Enter Goal: <input type="text" id="goal1"> 
+
+    <button onclick="sendText()" class="add" id="add">
+      <i class="fas fa-plus"></i> Add Tracker
+    </button>
+  </p>
+
+  <script> 
+
+    function sendText() {
+      var inputText = document.getElementById("goal1").value;
+      document.getElementById("outputContainer").innerText = "Entered Goal: " + inputText;
+      addGoal(inputText);
+    }
+  </script>
+  <script> 
+    function sendText() {
+      var inputText = document.getElementById("goal1").value;
+    }
+   </script>
+
+   <script src="script.js"></script>
+
+   <script      
+src="https://cdnjs.cloudflare.com/ajax/libs/marked/1.2.2/marked.min.js"  ></script>
+
+  <script>
+    const addBtn = document.getElementById('add')
+    let currentScore = 0
+    let scoreDisplay;
+
+    addBtn.addEventListener('click', () => addGoal())
+
+    function addGoal(text = '') {
+      const headerText = document.getElementById("goal1").value;
+      const goal = document.createElement('div')
+      const scoreDisplay = goal.querySelector('.scoreDisplay');
+
+      goal.classList.add('goal')
+
+
+        goal.innerHTML = `
+        <div class="tools">
+            <button class="edit"><i class="fas fa-edit"></i></button>
+            <button class="trash"><i class="fas fa-trash-alt"></i>  </button>
+        </div>
+
+      <h3>${headerText}</h3> 
+      <div class="main hidden"></div>
+      <textarea></textarea>
+      <div class="scoreDisplay">Score: ${currentScore} / 25</div>
+      <button class="scoreButton" onclick="incrementScore()">Increment Score</button>
+      <button class="scoreButton" onclick="decrementScore()">Decrement Score</button>
+      `
+
+        const editBtn = goal.querySelector('.edit')
+        const deleteBtn = goal.querySelector('.trash')
+        const main = goal.querySelector('.main')
+        const textArea = goal.querySelector('textarea');
+
+        main.innerHTML = marked(headerText);
+
+      deleteBtn.addEventListener('click', () => {
+            goal.remove()
+
+        })
+
+        editBtn.addEventListener('click', () => {
+            main.classList.toggle('hidden')
+            textArea.classList.toggle('hidden')
+        })
+
+
+      document.body.appendChild(goal)
+      updateScoreDisplay();
+    }
+    function incrementScore() {
+      if (currentScore < 25) {
+        currentScore++;
+        updateScoreDisplay();
+      }
+    }
+
+    function decrementScore() {
+      if (currentScore > 0) {
+        currentScore--;
+        updateScoreDisplay();
+      }
+    }
+
+    function updateScoreDisplay() {
+      if(scoreDisplay) {
+        scoreDisplay.innerText = "Score: " + currentScore + " / 25";
+      }
+    }
+
+  </script>
+
+  <script src="https://replit.com/public/js/replit-badge-v2.js" theme="dark" position="bottom-right"></script>
+</body>
+
+</html>
